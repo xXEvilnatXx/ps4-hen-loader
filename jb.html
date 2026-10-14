@@ -50,7 +50,7 @@
         text-transform: uppercase;
       }
 
-      /* running: a spinner under the brand. jb.js sets body.done / body.fail / body.log. */
+      /* Spinner de carga original de jb.html */
       #spin {
         position: fixed;
         left: 50%;
@@ -65,13 +65,10 @@
         animation: spin 1s linear infinite;
       }
       @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
       }
+
       #msg {
         position: fixed;
         top: 50%;
@@ -83,28 +80,25 @@
         letter-spacing: 0.5px;
         display: none;
       }
+
       #wrap {
         padding: 0;
-        min-height: calc(100vh - 100px);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        height: calc(100vh - 100px);
       }
       #state,
       #out {
         display: none;
       }
 
-      body.done #spin {
-        display: none;
-      }
+      body.done #spin,
       body.fail #spin {
         display: none;
       }
+      
       body.fail #msg {
         display: block;
       }
+      
       body.done #msg {
         display: block;
         color: #7fd0a0;
@@ -112,14 +106,13 @@
         letter-spacing: 2px;
       }
 
-      /* ?log=1 -- the full step log, styled like the landing. */
+      /* Estilos para el log de depuración */
       body.log #spin,
       body.log #msg {
         display: none;
       }
       body.log #wrap {
         padding: 14px 18px;
-        display: block;
       }
       body.log #state {
         display: block;
@@ -130,9 +123,7 @@
       body.log #out {
         display: block;
         white-space: pre-wrap;
-        font:
-          12px/1.45 Consolas,
-          monospace;
+        font: 12px/1.45 Consolas, monospace;
         background: rgba(15, 23, 42, 0.6);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
@@ -143,7 +134,7 @@
         overflow-y: auto;
       }
 
-      /* Footer idéntico a index.html */
+      /* Footer idéntico a index.html (sin position fixed para mantener la misma estructura) */
       #footer {
         height: 45px;
         display: flex;
@@ -160,24 +151,12 @@
         color: #94a3b8;
       }
 
-      .ok {
-        color: #7fd0a0;
-      }
-      .bad {
-        color: #d08a7f;
-      }
-      .warn {
-        color: #d8c07f;
-      }
-      .safe {
-        color: #7fd0a0;
-      }
-      .danger {
-        color: #d08a7f;
-      }
-      code {
-        color: #9fb3d0;
-      }
+      .ok { color: #7fd0a0; }
+      .bad { color: #d08a7f; }
+      .warn { color: #d8c07f; }
+      .safe { color: #7fd0a0; }
+      .danger { color: #d08a7f; }
+      code { color: #9fb3d0; }
     </style>
   </head>
   <body>
