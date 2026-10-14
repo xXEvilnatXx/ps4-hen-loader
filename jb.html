@@ -3,52 +3,72 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>RAW GAME - FOR TESTING ONLY!! DO NOT USE IT!!</title>
+    <title>PS4 HEN LOADER</title>
     <style>
+      * { box-sizing: border-box; }
       html,
       body {
         margin: 0;
         padding: 0;
-        min-height: 100%;
-        background: #0b0d10;
-        color: #c8ced8;
-        font:
-          15px/1.45 "Segoe UI",
-          system-ui,
-          sans-serif;
+        height: 100%;
+        overflow: hidden;
+        background: radial-gradient(circle at center, #161e29 0%, #0d121a 100%);
+        color: #cbd5e1;
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
       }
-      #brand {
-        text-align: center;
-        padding: 8px 10px;
-        background: #0e1116;
-        border-bottom: 1px solid #1e2732;
-      }
-      #brand b {
-        font-size: 15px;
-        font-weight: 700;
-        letter-spacing: 0.14em;
-        color: #e6ebf2;
-        vertical-align: middle;
+      
+      /* Cabecera idéntica a index.html */
+      #brand { 
+        text-align: center; 
+        padding: 16px 20px; 
+        background: rgba(15, 23, 42, 0.75);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06); 
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
       }
 
-      /* running: a spinner under the brand. jb.js sets body.done / body.fail / body.log. */
+      #brand::before {
+        content: "";
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background-color: #34d399;
+        border-radius: 50%;
+        box-shadow: 0 0 8px #34d399;
+      }
+
+      #brand b { 
+        font-size: 14px; 
+        font-weight: 700; 
+        letter-spacing: 0.25em;
+        color: #f8fafc; 
+        text-transform: uppercase;
+      }
+
+      /* Spinner de carga original de jb.html */
       #spin {
         position: fixed;
-        top: calc(50% + 20px);
         left: 50%;
-        width: 46px;
-        height: 46px;
-        margin: -23px 0 0 -23px;
-        border: 4px solid #1e2732;
-        border-top-color: #7fd0a0;
+        top: 50%;
+        margin: -75px 0 0 -75px;
+        border: 10px solid #1f1e1e;
         border-radius: 50%;
-        animation: spin 0.9s linear infinite;
+        border-top: 10px solid #044595;
+        border-left: 10px solid #044595;
+        width: 120px;
+        height: 120px;
+        animation: spin 1s linear infinite;
       }
       @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
       }
+
       #msg {
         position: fixed;
         top: 50%;
@@ -60,23 +80,25 @@
         letter-spacing: 0.5px;
         display: none;
       }
+
       #wrap {
         padding: 0;
+        height: calc(100vh - 100px);
       }
       #state,
       #out {
         display: none;
       }
 
-      body.done #spin {
-        display: none;
-      }
+      body.done #spin,
       body.fail #spin {
         display: none;
       }
+      
       body.fail #msg {
         display: block;
       }
+      
       body.done #msg {
         display: block;
         color: #7fd0a0;
@@ -84,7 +106,7 @@
         letter-spacing: 2px;
       }
 
-      /* ?log=1 -- the full step log, styled like the landing. */
+      /* Estilos para el log de depuración */
       body.log #spin,
       body.log #msg {
         display: none;
@@ -101,39 +123,45 @@
       body.log #out {
         display: block;
         white-space: pre-wrap;
-        font:
-          12px/1.45 Consolas,
-          monospace;
-        background: #11151b;
-        border: 1px solid #1e2732;
-        border-radius: 5px;
-        padding: 10px 12px;
+        font: 12px/1.45 Consolas, monospace;
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        padding: 16px;
         height: calc(100vh - 141px);
         overflow-y: auto;
       }
-      .ok {
-        color: #7fd0a0;
+
+      /* Footer idéntico a index.html (sin position fixed para mantener la misma estructura) */
+      #footer {
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        color: #64748b;
+        border-top: 1px solid rgba(255, 255, 255, 0.04);
+        background: rgba(15, 23, 42, 0.4);
+        letter-spacing: 0.3px;
       }
-      .bad {
-        color: #d08a7f;
+
+      #footer b {
+        color: #94a3b8;
       }
-      .warn {
-        color: #d8c07f;
-      }
-      .safe {
-        color: #7fd0a0;
-      }
-      .danger {
-        color: #d08a7f;
-      }
-      code {
-        color: #9fb3d0;
-      }
+
+      .ok { color: #7fd0a0; }
+      .bad { color: #d08a7f; }
+      .warn { color: #d8c07f; }
+      .safe { color: #7fd0a0; }
+      .danger { color: #d08a7f; }
+      code { color: #9fb3d0; }
     </style>
   </head>
   <body>
     <div id="brand">
-      <b>RAW GAME</b>
+      <b>PS4 HEN LOADER</b>
     </div>
     <div id="spin"></div>
     <div id="msg">Restart your console</div>
@@ -141,8 +169,11 @@
       <div id="state"></div>
       <div id="out"></div>
     </div>
+    <div id="footer">
+      Idea original de <b>&nbsp;raw13g&nbsp;</b> • Reestructurado por <b>&nbsp;Evilnat</b>
+    </div>
     <script type="module">
-      import "./javascript/jb.js?v=19";
+      import "./jb.js?v=19";
     </script>
   </body>
 </html>
