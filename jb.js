@@ -197,7 +197,8 @@ let allDone = false,
     )
       return;
 
-    const KPATCH_FILE = "patches/" + (off.kpatch || fwKey.replace(".", "") + ".bin");
+    const KPATCH_FILE =
+      "patches/" + (off.kpatch || fwKey.replace(".", "") + ".bin");
     const PAYLOAD_FILE = off.payload || "payload.bin";
     const needPatch = ["k_sysent_661", "k_jmp_rsi"].filter(
       (k) => off[k] === undefined,
@@ -225,6 +226,7 @@ let allDone = false,
       )
     )
       return;
+    mark("FW-STATUS", off.fw_status || "none");
     mark(
       "FW-KTABLE",
       "idt_rsvd=0x" +

@@ -5,149 +5,77 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>PS4 HEN LOADER</title>
 <style>
-  * { box-sizing: border-box; }
-  html, body { 
-    margin: 0; 
-    padding: 0; 
-    background: radial-gradient(circle at center, #161e29 0%, #0d121a 100%); 
-    color: #cbd5e1;
-    font-family: "Segoe UI", system-ui, -apple-system, sans-serif; 
-    height: 100%; 
-  }
+  html, body { margin:0; padding:0; background:#242629; color:#c8ced8;
+               font:15px/1.45 "Segoe UI", system-ui, sans-serif; height:100%; }
+  #wrap { padding:30px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100vh - 46px); box-sizing: border-box; }
+  #state { font-size:20px; font-weight:600; margin:0 0 15px; color: #e6ebf2; }
+  #cache { font-size:12px; color:#5c6672; margin:15px 0 0; min-height:14px; }
+  #cache.cacheok { color:#7fd0a0; }
+  .ok { color:#7fd0a0; } .bad { color:#d08a7f; } .warn { color:#d8c07f; }
   
-  /* Professional and modern header */
-  #brand { 
-    text-align: center; 
-    padding: 16px 20px; 
-    background: rgba(15, 23, 42, 0.75);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06); 
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+  #brand { text-align:center; padding:10px 10px; background:#0e1116;
+           border-bottom:1px solid #1e2732; }
+  #brand b { font-size:15px; font-weight:700; letter-spacing:.14em;
+             color:#e6ebf2; vertical-align:middle; }
+
+  /* Estilos del círculo girando (loader) */
+  .loader {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin: -75px 0 0 -75px;
+      border: 10px solid #1f1e1e;
+      border-radius: 50%;
+      border-top: 10px solid #044595;
+      border-left: 10px solid #044595;
+      width: 120px;
+      height: 120px;
+      animation: spin 1s linear infinite;
   }
 
-  #brand::before {
-    content: "";
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    background-color: #34d399;
-    border-radius: 50%;
-    box-shadow: 0 0 8px #34d399;
+  @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
   }
 
-  #brand b { 
-    font-size: 14px; 
-    font-weight: 700; 
-    letter-spacing: 0.25em;
-    color: #f8fafc; 
-    text-transform: uppercase;
-  }
-
-  #wrap { 
-    padding: 20px; 
-    text-align: center; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: center; 
-    min-height: calc(100vh - 100px); 
-  }
-
-  #state { 
-    font-size: 18px; 
-    font-weight: 500; 
-    margin: 0 0 20px; 
-    color: #e2e8f0; 
-    letter-spacing: 0.3px;
-  }
-
-  #cache { 
-    font-size: 13px; 
-    color: #64748b; 
-    margin: 20px 0 0; 
-    min-height: 16px; 
-    transition: color 0.3s ease;
-  }
-  #cache.cacheok { color: #34d399; }
-
-  .ok { color: #34d399; font-weight: 600; } 
-  .bad { color: #f87171; font-weight: 600; } 
-  .warn { color: #fbbf24; font-weight: 600; }
-  
-  /* Modern glassmorphism box */
+  /* Recuadro moderno para la versión del firmware */
   #det {
-      background: rgba(30, 41, 59, 0.4);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 16px 30px;
-      border-radius: 14px;
-      font-size: 15px;
-      color: #94a3b8;
-      margin-bottom: 25px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      background: #1b1d20;
+      border: 1px solid #2f3338;
+      padding: 14px 24px;
+      border-radius: 10px;
+      font-size: 18px;
+      color: #b8b8b8;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
       display: inline-block;
-      letter-spacing: 0.3px;
-      line-height: 1.6;
-      text-align: left;
   }
-  #det b { color: #f1f5f9; font-weight: 600; }
+  #det b { color: #ffffff; font-weight: 600; }
 
-  /* Modern minimalist button with bright gradient */
+  /* Botón moderno para Jailbreak */
   #jb-btn {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      background: linear-gradient(135deg, #044595, #065cb8);
       color: #ffffff;
       border: none;
-      padding: 15px 42px;
-      font-size: 16px;
+      padding: 14px 36px;
+      font-size: 17px;
       font-weight: 600;
-      letter-spacing: 0.8px;
-      border-radius: 12px;
+      letter-spacing: 0.5px;
+      border-radius: 8px;
       cursor: pointer;
-      box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 15px rgba(4, 69, 149, 0.4);
+      transition: all 0.2s ease;
   }
 
-  #jb-btn:not(:disabled):hover {
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
-      box-shadow: 0 14px 30px -5px rgba(37, 99, 235, 0.6);
+  #jb-btn:hover {
+      background: linear-gradient(135deg, #065cb8, #0871ea);
+      box-shadow: 0 6px 20px rgba(4, 69, 149, 0.6);
       transform: translateY(-2px);
   }
 
-  #jb-btn:not(:disabled):active {
+  #jb-btn:active {
       transform: translateY(0);
-      box-shadow: 0 6px 15px -3px rgba(37, 99, 235, 0.4);
-  }
-
-  /* Elegant disabled state */
-  #jb-btn:disabled {
-      background: rgba(30, 41, 59, 0.5);
-      color: #475569;
-      cursor: not-allowed;
-      box-shadow: none;
-      border: 1px solid rgba(255, 255, 255, 0.03);
-      opacity: 0.7;
-  }
-
-  #footer {
-      height: 45px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      color: #64748b;
-      border-top: 1px solid rgba(255, 255, 255, 0.04);
-      background: rgba(15, 23, 42, 0.4);
-      letter-spacing: 0.3px;
-  }
-
-  #footer b {
-      color: #94a3b8;
+      box-shadow: 0 2px 10px rgba(4, 69, 149, 0.4);
   }
 
   .hidden {
@@ -160,18 +88,17 @@
   <b>PS4 HEN LOADER</b>
 </div>
 
+<!-- Círculo girando -->
+<div id="loader" class="loader"></div>
+
 <div id="wrap">
-  <div id="state">Checking system and cache...</div>
-  <div id="det">Firmware: Loading...<br>Offline Ready: Checking...</div>
+  <div id="state">Detectando sistema...</div>
+  <div id="det">Firmware: Cargando...</div>
   <div>
-    <!-- Jailbreak button (disabled by default on load) -->
-    <button id="jb-btn" disabled>Jailbreak</button>
+    <!-- Botón moderno de Jailbreak -->
+    <button id="jb-btn" class="hidden">Jailbreak</button>
   </div>
   <div id="cache"></div>
-</div>
-
-<div id="footer">
-  Idea original de <b>&nbsp;raw13g&nbsp;</b> • Reestructurado por <b>&nbsp;Evilnat</b>
 </div>
 
 <script>
@@ -179,15 +106,14 @@
     var stateEl = document.getElementById("state");
     var detEl = document.getElementById("det");
     var cacheEl = document.getElementById("cache");
+    var loaderEl = document.getElementById("loader");
     var jbBtn = document.getElementById("jb-btn");
 
     function setState(t, c) { stateEl.textContent = t; stateEl.className = c || ""; }
     function setCache(t, ok) { cacheEl.textContent = t; cacheEl.className = ok ? "cacheok" : ""; }
     
     var params = new URLSearchParams(location.search);
-    
-    // Restricted strictly to 13.02, 13.50, and 13.52
-    var SUPPORTED = { 1302: 1, 1350: 1, 1352: 1 };
+    var SUPPORTED = { 1302: 1, 1304: 1, 1350: 1, 1352: 1 };
 
     var key = null, fwnum = null;
     var m = /PlayStation\s+4[\/ ](\d+)\.(\d+)/.exec(navigator.userAgent);
@@ -201,86 +127,86 @@
     var forced = params.get("force") === "1";
     var supported = forced || (fwnum !== null && SUPPORTED[fwnum] === 1);
     
-    // Function to update the details box with Offline Ready status
-    function updateDetails(offlineStatus) {
-        var fwText = "Firmware: <b>" + (key || "Unknown") + "</b> " + (supported ? "<span class='ok'>&bull; Supported</span>" : "<span class='bad'>&bull; Not supported</span>");
-        var offlineText = "Offline Ready: <b>" + offlineStatus + "</b>";
-        detEl.innerHTML = fwText + "<br>" + offlineText;
-    }
-
-    updateDetails("Checking...");
+    // Mostrar la versión real dentro del recuadro
+    detEl.innerHTML = "Firmware: <b>" + (key || "Desconocida") + "</b>"
+        + (supported ? " <span class='ok'>&bull; Soportado</span>"
+                     : " <span class='bad'>&bull; No soportado</span>");
 
     var target = "jb.html" + location.search;
     function go() { 
-        setState("Loading jailbreak...", "warn"); 
+        loaderEl.style.display = "block";
+        setState("Cargando jailbreak...", "warn"); 
         location.replace(target); 
     }
 
-    // If the firmware is NOT supported, block permanently
+    // Si el firmware NO es soportado, bloqueamos la ejecución y ocultamos el botón
     if (!supported) {
-        setState("UNSUPPORTED FIRMWARE", "bad");
-        setCache("The exploit is not compatible with this version");
-        updateDetails("Not available");
-        jbBtn.disabled = true;
-        return;
+        loaderEl.style.display = "none";
+        setState("FIRMWARE NO SOPORTADO", "bad");
+        setCache("El exploit no es compatible con esta versión.");
+        return; // Se detiene aquí, impidiendo que el botón aparezca o funcione
     }
 
-    function enableButton(msg, offlineReadyText) {
+    jbBtn.onclick = function() {
+        jbBtn.classList.add("hidden");
+        go();
+    };
+
+    function showButton(msg) {
+        loaderEl.style.display = "none";
         setState(msg, "warn");
-        updateDetails(offlineReadyText);
-        jbBtn.disabled = false; 
-        jbBtn.onclick = function() {
-            jbBtn.disabled = true;
-            go();
-        };
+        jbBtn.classList.remove("hidden");
     }
 
-    function handleUpdateReady() {
-        try { ac.swapCache(); } catch (e) {}
-        setCache("Update downloaded", true);
-        setState("UPDATE READY", "warn");
-        updateDetails("Yes (Updated)");
-        jbBtn.disabled = false;
-        jbBtn.onclick = function () { location.reload(); };
+    function waitForTap(msg, action) {
+        setState(msg, "warn");
+        jbBtn.classList.remove("hidden");
+        jbBtn.onclick = function() {
+            jbBtn.classList.add("hidden");
+            action();
+        };
     }
 
     var ac = window.applicationCache;
     if (!ac || !document.documentElement.hasAttribute("manifest")) {
-        enableButton("System ready", "N/A");
+        showButton("Sistema listo");
     } else if (!navigator.onLine) {
-        setCache("Offline mode -- from cache", true);
-        enableButton("System ready", "Yes (Offline active)");
+        setCache("Modo offline -- desde caché", true);
+        showButton("Sistema listo");
     } else if (ac.status === ac.IDLE) {
-        setCache("Cache ready", true);
-        enableButton("System ready", "Yes (Cache ready)");
+        setCache("Caché lista", true);
+        showButton("Sistema listo");
     } else if (ac.status === ac.UPDATEREADY) {
-        handleUpdateReady();
+        try { ac.swapCache(); } catch (e) {}
+        setCache("Actualización descargada", true);
+        waitForTap("ACTUALIZACIÓN LISTA -- Pulsa para recargar", function () { location.reload(); });
     } else {
-        setCache("Checking cache...");
-        ac.addEventListener("downloading", function () { 
-            setCache("Downloading offline cache (first run)..."); 
-            updateDetails("Downloading...");
-        }, false);
+        setCache("Comprobando caché...");
+        ac.addEventListener("downloading", function () { setCache("Descargando caché offline (primer uso)..."); }, false);
         ac.addEventListener("progress", function (e) {
             if (e && e.total)
-                setCache("Cache " + Math.round((e.loaded / e.total) * 100) + "%");
+                setCache("Caché " + Math.round((e.loaded / e.total) * 100) + "%");
         }, false);
         ac.addEventListener("cached", function () {
-            setCache("Saved to offline cache", true);
-            enableButton("System ready", "Yes (Saved)");
+            setCache("Guardado en caché offline", true);
+            showButton("Sistema listo");
         }, false);
-        ac.addEventListener("updateready", handleUpdateReady, false);
+        ac.addEventListener("updateready", function () {
+            try { ac.swapCache(); } catch (e) {}
+            setCache("Actualización descargada", true);
+            waitForTap("ACTUALIZACIÓN LISTA -- Pulsa para recargar", function () { location.reload(); });
+        }, false);
         ac.addEventListener("noupdate", function () {
-            setCache("Cache up to date -- offline ready", true);
-            enableButton("System ready", "Yes (Up to date)");
+            setCache("Caché al día -- listo offline", true);
+            showButton("Sistema listo");
         }, false);
         ac.addEventListener("error", function () {
-            setCache("Cache unavailable");
-            enableButton("Ready to run (no cache)", "No (Network error)");
+            setCache("Caché no disponible");
+            waitForTap("Error en caché -- Pulsa para ejecutar de todos modos", go);
         }, false);
         ac.addEventListener("obsolete", function () {
-            setCache("Cache obsolete");
-            enableButton("Ready to run", "Obsolete");
+            setCache("Caché obsoleta");
+            waitForTap("Caché obsoleta -- Pulsa para ejecutar", go);
         }, false);
     }
 })();
