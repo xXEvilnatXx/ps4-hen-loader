@@ -3864,7 +3864,7 @@ let allDone = false,
         (allDone ? "" : "  INCOMPLETE"),
     );
     try {
-      finishUI(payloadRunning);
+      finishUI(allDone || payloadRunning || jailbroken);
     } catch (eUI) {}
   }
 })();
