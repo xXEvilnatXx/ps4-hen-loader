@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>RAW GAME - FOR TESTING ONLY!! DO NOT USE IT!!</title>
+    <title>PS4 HEN LOADER</title>
     <style>
       * { box-sizing: border-box; }
       html,
@@ -11,12 +11,9 @@
         margin: 0;
         padding: 0;
         min-height: 100%;
-        background: #0b0d10;
-        color: #c8ced8;
-        font:
-          15px/1.45 "Segoe UI",
-          system-ui,
-          sans-serif;
+        background: radial-gradient(circle at center, #161e29 0%, #0d121a 100%);
+        color: #cbd5e1;
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
       }
       #brand {
         text-align: center;
@@ -135,6 +132,27 @@
         height: calc(100vh - 141px);
         overflow-y: auto;
       }
+
+      #footer {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 45px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 12px;
+          color: #64748b;
+          border-top: 1px solid rgba(255, 255, 255, 0.04);
+          background: rgba(15, 23, 42, 0.4);
+          letter-spacing: 0.3px;
+      }
+
+      #footer b {
+          color: #94a3b8;
+      }
+
       .ok {
         color: #7fd0a0;
       }
@@ -157,13 +175,16 @@
   </head>
   <body>
     <div id="brand">
-      <b>RAW GAME</b>
+      <b>PS4 HEN LOADER</b>
     </div>
     <div id="spin"></div>
     <div id="msg">Restart your console</div>
     <div id="wrap">
       <div id="state"></div>
       <div id="out"></div>
+    </div>
+    <div id="footer">
+      Idea original de <b>&nbsp;raw13g&nbsp;</b> • Reestructurado por <b>&nbsp;Evilnat</b>
     </div>
     <script type="module">
       import "./jb.js?v=19";
