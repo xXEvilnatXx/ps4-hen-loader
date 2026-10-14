@@ -1,7 +1,7 @@
-import { establishPrimitive } from "./javascript/core.js?v=10";
-import { installWindowP, pairStatus } from "./javascript/mem.js";
-import { int64 } from "./javascript/int64.js";
-import { offsetsFor } from "./javascript/ps4_offsets.js";
+import { establishPrimitive } from "./core.js?v=10";
+import { installWindowP, pairStatus } from "./mem.js";
+import { int64 } from "./int64.js";
+import { offsetsFor } from "./ps4_offsets.js";
 
 const outEl = document.getElementById("out");
 const stateEl = document.getElementById("state");
@@ -197,8 +197,9 @@ let allDone = false,
     )
       return;
 
-    const KPATCH_FILE = "../patches/" + (off.kpatch || fwKey.replace(".", "") + ".bin");
-    const PAYLOAD_FILE = "../patches/" + (off.payload || "payload.bin");
+    const KPATCH_FILE =
+      "patches/" + (off.kpatch || fwKey.replace(".", "") + ".bin");
+    const PAYLOAD_FILE = off.payload || "payload.bin";
     const needPatch = ["k_sysent_661", "k_jmp_rsi"].filter(
       (k) => off[k] === undefined,
     );
@@ -225,6 +226,7 @@ let allDone = false,
       )
     )
       return;
+    mark("FW-STATUS", off.fw_status || "none");
     mark(
       "FW-KTABLE",
       "idt_rsvd=0x" +
