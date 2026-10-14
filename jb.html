@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>RAW GAME - FOR TESTING ONLY!! DO NOT USE IT!!</title>
+    <title>PS4 HEN LOADER</title>
     <style>
       * { box-sizing: border-box; }
       html,
@@ -68,8 +68,9 @@
         100% { transform: rotate(360deg); }
       }
 
-      /* Mensaje central con estilo de tarjeta / glassmorphism */
+      /* Mensaje oculto por defecto para que no dibuje ningún rectángulo vacío */
       #msg {
+        display: none;
         position: fixed;
         top: 50%;
         left: 50%;
@@ -78,15 +79,13 @@
         font-size: 16px;
         font-weight: 600;
         letter-spacing: 0.5px;
-        background: rgba(30, 41, 59, 0.6);
+        background: rgba(30, 41, 59, 0.85);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.08);
         padding: 20px 35px;
         border-radius: 14px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        color: #f87171; /* Por defecto rojo para errores/reinicio */
-        display: none;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
       }
 
       #wrap {
@@ -106,7 +105,7 @@
         display: none;
       }
 
-      /* Estados controlados por jb.js (classes .done / .fail) */
+      /* Estados controlados por jb.js al finalizar */
       body.done #spin,
       body.fail #spin {
         display: none !important;
@@ -114,12 +113,12 @@
       
       body.fail #msg {
         display: block !important;
-        color: #f87171 !important; /* Rojo elegante */
+        color: #f87171 !important; /* Rojo elegante para error */
       }
       
       body.done #msg {
         display: block !important;
-        color: #34d399 !important; /* Verde brillante alineado con index.html */
+        color: #34d399 !important; /* Verde brillante para éxito */
         font-weight: 700;
         letter-spacing: 1px;
       }
@@ -187,7 +186,7 @@
     </div>
     
     <div id="spin"></div>
-    <div id="msg">Restart your console</div>
+    <div id="msg"></div>
     
     <div id="wrap">
       <div id="state"></div>
