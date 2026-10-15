@@ -163,6 +163,13 @@
 <div id="wrap">
   <div id="state">Checking system and cache...</div>
   <div id="det">Firmware: Loading...<br>Offline Ready: Checking...</div>
+  
+  <!-- Nueva casilla para activar/desactivar el log -->
+  <div style="margin-bottom: 20px; font-size: 14px; color: #94a3b8; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+    <input type="checkbox" id="chk-log" style="width: 16px; height: 16px; accent-color: #2563eb; cursor: pointer;">
+    <label for="chk-log" style="cursor: pointer;">Mostrar log en pantalla</label>
+  </div>
+
   <div>
     <!-- Jailbreak button (disabled by default on load) -->
     <button id="jb-btn" disabled>Jailbreak</button>
