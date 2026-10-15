@@ -11,12 +11,13 @@
         margin: 0;
         padding: 0;
         height: 100%;
+        overflow: hidden;
         background: radial-gradient(circle at center, #161e29 0%, #0d121a 100%);
         color: #cbd5e1;
         font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
       }
       
-      /* Cabecera profesional y moderna */
+      /* Cabecera idéntica a index.html */
       #brand { 
         text-align: center; 
         padding: 16px 20px; 
@@ -49,7 +50,7 @@
         text-transform: uppercase;
       }
 
-      /* Spinner moderno idéntico al de index.html */
+      /* Spinner de carga original de jb.html */
       #spin {
         position: fixed;
         left: 50%;
@@ -57,8 +58,8 @@
         margin: -75px 0 0 -75px;
         border: 10px solid #1f1e1e;
         border-radius: 50%;
-        border-top: 10px solid #34d399;
-        border-left: 10px solid #34d399;
+        border-top: 10px solid #044595;
+        border-left: 10px solid #044595;
         width: 120px;
         height: 120px;
         animation: spin 1s linear infinite;
@@ -68,78 +69,64 @@
         100% { transform: rotate(360deg); }
       }
 
-      /* Mensaje oculto por defecto para que no dibuje ningún rectángulo vacío */
       #msg {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        font-size: 16px;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        background: rgba(30, 41, 59, 0.85);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        padding: 20px 35px;
-        border-radius: 14px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-      }
+	    position: fixed;
+	    top: 50%;
+	    left: 50%;
+	    transform: translate(-50%, -50%);
+	    text-align: center;
+	    font-size: 18px;
+	    letter-spacing: 1px;
+	    padding: 20px 40px;
+	    border-radius: 14px;
+	    background: rgba(30, 41, 59, 0.75);
+	    backdrop-filter: blur(12px);
+	    -webkit-backdrop-filter: blur(12px);
+	    border: 1px solid rgba(255, 255, 255, 0.08);
+	    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+	    display: none;
+	    z-index: 100;
+	  }
 
       #wrap {
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: calc(100vh - 100px);
+        padding: 0;
+        height: calc(100vh - 100px);
       }
-      
-      #state {
-        font-size: 18px;
-        font-weight: 500;
-        color: #e2e8f0;
-        margin-bottom: 20px;
+      #state,
+      #out {
         display: none;
       }
 
-      /* Estados controlados por jb.js al finalizar */
       body.done #spin,
       body.fail #spin {
-        display: none !important;
+        display: none;
       }
       
       body.fail #msg {
-        display: block !important;
-        color: #f87171 !important; /* Rojo elegante para error */
-      }
+	    display: block;
+	    color: #f87171; /* Rojo suave para error / Restart */
+	    font-weight: 600;
+	  }
       
       body.done #msg {
-        display: block !important;
-        color: #34d399 !important; /* Verde brillante para éxito */
-        font-weight: 700;
-        letter-spacing: 1px;
-      }
+	    display: block;
+	    color: #34d399; /* Verde brillante para DONE */
+	    font-weight: 700;
+	  }
 
-      /* Log de depuración (?log=1) */
+      /* Estilos para el log de depuración */
       body.log #spin,
       body.log #msg {
-        display: none !important;
+        display: none;
       }
       body.log #wrap {
         padding: 14px 18px;
-        display: block;
       }
       body.log #state {
         display: block;
         font-size: 22px;
         font-weight: 700;
         margin: 0 0 8px;
-      }
-      #out {
-        display: none;
       }
       body.log #out {
         display: block;
@@ -155,7 +142,7 @@
         overflow-y: auto;
       }
 
-      /* Footer idéntico al de index.html */
+      /* Footer idéntico a index.html (sin position fixed para mantener la misma estructura) */
       #footer {
         height: 45px;
         display: flex;
@@ -172,11 +159,11 @@
         color: #94a3b8;
       }
 
-      .ok { color: #34d399; }
-      .bad { color: #f87171; }
-      .warn { color: #fbbf24; }
-      .safe { color: #34d399; }
-      .danger { color: #f87171; }
+      .ok { color: #7fd0a0; }
+      .bad { color: #d08a7f; }
+      .warn { color: #d8c07f; }
+      .safe { color: #7fd0a0; }
+      .danger { color: #d08a7f; }
       code { color: #9fb3d0; }
     </style>
   </head>
@@ -184,19 +171,15 @@
     <div id="brand">
       <b>PS4 HEN LOADER</b>
     </div>
-    
     <div id="spin"></div>
-    <div id="msg"></div>
-    
+    <div id="msg">Restart your console</div>
     <div id="wrap">
       <div id="state"></div>
       <div id="out"></div>
     </div>
-    
     <div id="footer">
-      Original idea by <b>&nbsp;raw13g&nbsp;</b> • Restructured by <b>&nbsp;Evilnat</b>
+      Idea original de <b>&nbsp;raw13g&nbsp;</b> • Reestructurado por <b>&nbsp;Evilnat</b>
     </div>
-
     <script type="module">
       import "./jb.js?v=19";
     </script>
