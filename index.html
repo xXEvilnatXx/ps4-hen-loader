@@ -218,9 +218,16 @@
     updateDetails("Checking...");
 
     var target = "jb.html" + location.search;
+
+    var chkLog = document.getElementById("chk-log");
     function go() { 
         setState("Loading jailbreak...", "warn"); 
-        location.replace(target); 
+        
+        // Comprobamos si la casilla está marcada
+        var showLog = chkLog && chkLog.checked ? "&log=1" : "";
+        var finalTarget = "jb.html" + location.search + (location.search ? "&" : "?") + showLog.replace("?", "");
+        
+        location.replace(finalTarget); 
     }
 
     // If the firmware is NOT supported, block permanently
