@@ -2934,8 +2934,7 @@ let allDone = false,
             "EG-GATE",
             "krwOk=" +
               (krwOk ? 1 : 0) +
-              " jb=" +
-              (DO_JB ? 1 : 0) +
+              " jb=0" +
               " patch=" +
               (DO_PATCH ? 1 : 0) +
               " payload=" +
