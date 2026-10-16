@@ -55,7 +55,7 @@ function finishUI(ok) {
   const m = document.getElementById("msg");
   if (m)
     m.textContent = ok
-      ? "DONE"
+      ? "Completed, please don't close the browser"
       : armedEver
         ? "Restart your console"
         : "Refresh the page and run again";
