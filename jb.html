@@ -17,7 +17,6 @@
         font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
       }
       
-      /* Cabecera idéntica a index.html */
       #brand { 
         text-align: center; 
         padding: 16px 20px; 
@@ -97,6 +96,22 @@
         display: none;
       }
 
+      body:not(.log):not(.done):not(.fail) #state {
+        display: block;
+        position: fixed;
+        top: calc(50% + 85px);
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        font-size: 14px;
+        font-weight: 500;
+        color: #94a3b8;
+        letter-spacing: 0.5px;
+        width: 80%;
+        z-index: 99;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
       body.done #spin,
       body.fail #spin {
         display: none;
@@ -104,24 +119,23 @@
       
       body.fail #msg {
 	    display: block;
-	    color: #f87171; /* Rojo suave para error / Restart */
+	    color: #f87171; 
 	    font-weight: 600;
 	  }
       
       body.done #msg {
 	    display: block;
-	    color: #34d399; /* Verde brillante para DONE */
+	    color: #34d399; 
 	    font-weight: 700;
 	  }
 
-      /* Estilos para el log de depuración */
       body.log #spin,
       body.log #msg {
         display: none;
       }
       body.log #wrap {
         padding: 20px;
-        height: calc(100vh - 45px); /* Ajustado para ocupar toda la pantalla menos el footer */
+        height: calc(100vh - 45px);
         display: flex;
         flex-direction: column;
       }
@@ -139,8 +153,7 @@
         flex-grow: 1;
         white-space: pre-wrap;
         font: 13px/1.5 Consolas, Monaco, monospace;
-        
-        /* Fondo idéntico al radial-gradient del body / círculo girando, sin bordes ni sombras de caja */
+        /
         background: radial-gradient(circle at center, #161e29 0%, #0d121a 100%);
         border: none;
         box-shadow: none;
@@ -153,8 +166,7 @@
         text-align: left;
         color: #94a3b8;
       }
-
-      /* Footer idéntico a index.html (sin position fixed para mantener la misma estructura) */
+      
       #footer {
         height: 45px;
         display: flex;
@@ -194,6 +206,14 @@
     </div>
     <script type="module">
       import "./jb.js?v=19";
+    </script>
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {
+        const stateDiv = document.getElementById('state');
+        if (stateDiv && !stateDiv.innerText) {
+          stateDiv.innerText = "Loading exploit...";
+        }
+      });
     </script>
   </body>
 </html>
