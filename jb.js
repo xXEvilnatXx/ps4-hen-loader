@@ -61,10 +61,44 @@ function finishUI(ok) {
         : "Refresh the page and run again";
   document.body.className = ok ? "done" : "fail";
 }
+
+// Dictionary to show user-friendly steps in English on the UI
+const friendlySteps = {
+  "BUILD": "Loading environment...",
+  "FW": "Verifying firmware...",
+  "PRIMITIVE-OK": "Establishing primitive...",
+  "BASES": "Calculating module bases...",
+  "STUBS": "Preparing system calls...",
+  "PR-CFG": "Configuring memory parameters...",
+  "pr-scratch-page-mapped": "Setting up scratch memory page...",
+  "pr-scratch-page-kernel-rw": "Establishing read/write...",
+  "MAIN-PINNED": "Configuring CPU cores...",
+  "PR-SATURATE": "Saturating memory buffer...",
+  "PR-POOL": "Preparing socket pool...",
+  "PR-LEAK": "Analyzing memory (Leak)...",
+  "PR-CURTHREADS": "Processing system threads...",
+  "PR-ARENA": "Building memory arena...",
+  "ANCHOR-PLAN": "Locating kernel base (Anchor)...",
+  "ANCHOR-HANDLER": "Calculating kernel addresses...",
+  "CAPS-TARGET": "Configuring capability privileges...",
+  "KF-TARGETS": "Searching file references...",
+  "KRW-PLAN": "Preparing Kernel Read/Write (KRW)...",
+  "JB-ROOT": "Escalating privileges to Root...",
+  "KPATCH-BLOB": "Applying kernel patches...",
+  "PAYLOAD-RUNNING": "Executing Payload..."
+};
+
 function mark(tag, detail) {
   const raw = detail;
   detail = terse(detail);
   lines.push(tag + (detail == null || detail === "" ? "" : "  " + detail));
+  
+  // Update the state text below the spinner if log is not active
+  if (!SHOW_LOG && stateEl) {
+    const textToShow = friendlySteps[tag] || tag.replace(/-/g, " ");
+    stateEl.textContent = textToShow;
+  }
+
   if (SHOW_LOG && outEl) {
     const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;");
     outEl.innerHTML = lines
@@ -157,7 +191,7 @@ let allDone = false,
     mark("BUILD", "jb=skipjb2 base=ef1670a");
     mark("FW", key || "(not a PS4 UA)");
     if (!off) {
-      state("no offsets for this firmware", "bad");
+      state("No offsets for this firmware", "bad");
       return;
     }
     const fwKey = key || "unknown";
@@ -242,16 +276,6 @@ let allDone = false,
         " src=ps4_offsets.js",
     );
 
-    // ---- benign-miss auto-retry (reads only, before any kernel write) ----
-    // A passA/passB "no crossing" is a recoverable reclaim miss in the READ
-    // phase -- no kernel .data/.text has been touched yet, so reloading and
-    // retrying is safe. The counter lives in sessionStorage so it survives
-    // the reload and is cleared the moment the read phase succeeds, so a
-    // later manual run always starts fresh. NEVER call retryBenign() after a
-    // kernel write: a reload would re-enter with the kernel already modified.
-    // A hard KP (a total reclaim miss that faults inside the cancel walk)
-    // cannot be caught here and still needs a reboot -- this only recovers
-    // the benign, detectable misses.
     const retryArg = parseInt(params.get("retry") || "", 10);
     const RETRY_MAX = Number.isFinite(retryArg) && retryArg >= 0 ? retryArg : 4;
     const RETRY_KEY = "jb1352-read-retry";
@@ -302,7 +326,7 @@ let allDone = false,
     if (retryCount() > 0)
       mark("AUTO-RELOAD-RESUME", "reload=" + retryCount() + "/" + RETRY_MAX);
 
-    state("running the primitive...", "warn");
+    state("Running, please wait...", "warn");
     await new Promise((r) => setTimeout(r, 0));
 
     const PRIMITIVE_LOUD = /FAIL|ERROR|THREW|RETRY|ABORT|PASS/i;
@@ -1960,9 +1984,6 @@ let allDone = false,
         " 8-byte aligned=" +
         (((W0 >>> 0) & 7) === 0),
     );
-    // Read phase is done: the remaining armings (anchor, caps) touch the
-    // kernel, so from here a failure must NOT auto-reload. Reset the counter
-    // so the next manual run starts fresh.
     clearRetry();
 
     const IDT = new int64(0x00001a00, 0xffffff80);
@@ -3821,7 +3842,7 @@ let allDone = false,
     }
   } catch (e) {
     mark("THREW", e && e.message ? e.message : String(e));
-    state("threw", "bad");
+    state("Threw", "bad");
   } finally {
     try {
       if (jbRestoreHook) jbRestoreHook("finally");
