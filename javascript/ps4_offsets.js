@@ -560,7 +560,7 @@ PS4["13.52"] = Object.assign({}, PS4["13.50"], {
   k_kl_lock: 0xe6c60,
   k_evf_cv: 0x785228,
 
-  kpatch: "1352.bin",
+  kpatch: "../patches/1352.bin",
 
   payload: "../goldhen.bin",
   fw_status:
