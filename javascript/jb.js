@@ -762,7 +762,7 @@ let allDone = false,
 
     async function bringWorker(name) {
       const w = { name: name, armed: false, wired: false };
-      w.worker = new Worker("rpc_worker.js");
+      w.worker = new Worker("javascript/rpc_worker.js");
       w.rpc = makeRpc(w.worker, name);
       if ((await w.rpc("ping", 15000)) !== "pong")
         throw new Error(name + " ping");
