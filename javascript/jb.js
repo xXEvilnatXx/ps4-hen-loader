@@ -1,5 +1,5 @@
 import { establishPrimitive } from "./core.js?v=10";
-import { installWindowP, pairStatus } from "./mem.js";
+import { installWindowP, pairStatus, readInto } from "./mem.js";
 import { int64 } from "./int64.js";
 import { offsetsFor } from "./ps4_offsets.js";
 
@@ -156,7 +156,7 @@ async function dumpKernelMemory(p, kernelBase, totalSize = 0x2000000)
     {
         try 
         {
-            p.readInto(dumpBuffer.subarray(offset, offset + CHUNK_SIZE), currentAddress, CHUNK_SIZE);
+            readInto(dumpBuffer.subarray(offset, offset + CHUNK_SIZE), currentAddress, CHUNK_SIZE);
             
             offset += CHUNK_SIZE;
             currentAddress = currentAddress.add32(CHUNK_SIZE);
