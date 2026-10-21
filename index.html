@@ -322,6 +322,12 @@
             jbBtn.disabled = true;
             go();
         };
+
+        if (offlineReadyText.includes("Yes") || offlineReadyText.includes("N/A")) {
+            setTimeout(function() {
+                go();
+            }, 500);
+        }
     }
 
     function handleUpdateReady() {
