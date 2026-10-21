@@ -260,7 +260,6 @@ let allDone = false,
       )
     )
       return;
-    mark("FW-STATUS", off.fw_status || "none");
     mark(
       "FW-KTABLE",
       "idt_rsvd=0x" +
