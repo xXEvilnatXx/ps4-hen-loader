@@ -62,8 +62,7 @@ function finishUI(ok) {
   document.body.className = ok ? "done" : "fail";
 }
 
-// Dictionary to show user-friendly steps in English on the UI
-const friendlySteps = {
+const taskSteps = {
   "BUILD": "Loading environment...",
   "FW": "Verifying firmware...",
   "PRIMITIVE-OK": "Establishing primitive...",
@@ -93,9 +92,8 @@ function mark(tag, detail) {
   detail = terse(detail);
   lines.push(tag + (detail == null || detail === "" ? "" : "  " + detail));
   
-  // Update the state text below the spinner if log is not active
   if (!SHOW_LOG && stateEl) {
-    const textToShow = friendlySteps[tag] || tag.replace(/-/g, " ");
+    const textToShow = taskSteps[tag] || tag.replace(/-/g, " ");
     stateEl.textContent = textToShow;
   }
 
@@ -428,19 +426,34 @@ let allDone = false,
     ];
 
     const stubAddr = new Map();
-    let seeded = 0;
-    if (off.k_stubs) {
-      for (const numStr in off.k_stubs) {
-        const num = +numStr,
-          o = off.k_stubs[numStr];
-        const v = p.read8(libkernelBase.add32(o));
-        if ((v.low & 0x00ffffff) !== 0xc0c748 || v.hi >>> 24 !== 0x49) continue;
-        if (((v.low >>> 24) | ((v.hi & 0x00ffffff) << 8)) >>> 0 !== num)
-          continue;
-        stubAddr.set(num, libkernelBase.add32(o));
-        seeded++;
-      }
-    }
+	let seeded = 0;
+
+	if (off.k_stubs) {
+	  for (const numStr in off.k_stubs) {
+	    const num = +numStr,
+	      o = off.k_stubs[numStr];
+	    
+	    const targetAddr = libkernelBase.add32(o);
+	    const v = p.read8(targetAddr);
+
+	    // Combinar .hi y .low en un valor hexadecimal de 64 bits legible
+	    const readHex = "0x" + (v.hi >>> 0).toString(16).padStart(8, '0') + (v.low >>> 0).toString(16).padStart(8, '0');
+	    
+	    // Imprimir el valor de los 8 bytes leídos en pantalla
+	    mark("+++++++++++++ DEBUG-READ", `Offset 0x${o.toString(16)} -> Leído: ${readHex}`);
+
+	    // Comprobaciones originales
+	    if ((v.low & 0x00ffffff) !== 0xc0c748 || v.hi >>> 24 !== 0x49) continue;
+	    if (((v.low >>> 24) | ((v.hi & 0x00ffffff) << 8)) >>> 0 !== num)
+	      continue;
+	      
+	    stubAddr.set(num, targetAddr);
+	    seeded++;
+
+	    // Mensaje adicional si coincide correctamente
+	    mark("+++++++++++++ STUB-MATCH", `Syscall #${num} encontrada en 0x${o.toString(16)}`);
+	  }
+	}
     const need = new Set(
       Object.keys(SYS)
         .map((k) => SYS[k])
