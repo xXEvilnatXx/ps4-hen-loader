@@ -438,7 +438,7 @@ let allDone = false,
         stubAddr.set(num, libkernelBase.add32(o));
         seeded++;
       }
-    }. Parece que esta comparando los offset de k_stub para ver si estan correctos, que valor deberia comprobar segun el codigo
+    }
     const need = new Set(
       Object.keys(SYS)
         .map((k) => SYS[k])
